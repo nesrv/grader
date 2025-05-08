@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-Грейдер - Подготовка к собеседованиям</title>
+    <link rel="stylesheet" href="/static/css/duolingo-style.css">
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__container">
+            <div class="header__logo">
+                <a href="/">
+                    <img src="/static/images/logo-black.svg" alt="IT-Грейдер" class="logo">
+                </a>
+            </div>
+            <nav class="header__nav">
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-link">ГРЕЙДЫ</a></li>
+                    <li><a href="#" class="nav-link">О НАС</a></li>
+                    <li><a href="#" class="nav-link">МЕТОДИКА</a></li>
+                    <li><a href="#" class="nav-link">ПРОГРЕСС</a></li>
+                </ul>
+            </nav>
+            <div class="header__auth">
+                <button class="btn btn--secondary" id="loginBtn">ВОЙТИ</button>
+                <button class="btn btn--primary" id="registerBtn">НАЧАТЬ</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero__container">
+            <div class="hero__content">
+                <h1 class="hero__title">Подготовься к собеседованию на нужный грейд</h1>
+                <p class="hero__text">IT-Грейдер поможет тебе подготовиться к техническому собеседованию с помощью интерактивных заданий и персонализированного подхода</p>
+                <button class="btn btn--primary btn--large" id="startBtn">НАЧАТЬ ПОДГОТОВКУ</button>
+            </div>
+            <div class="hero__image">
+                <img src="/static/images/mascot.svg" alt="IT-Грейдер Маскот">
+            </div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Выбери грейд для подготовки</h2>
+            
+            <div class="categories__grid">
+                <!-- Категория 1: Python-бэкендеры -->
+                <div class="category-card">
+                    <div class="category-card__header">
+                        <h3 class="category-card__title">Python-бэкендеры</h3>
+                        <p class="category-card__subtitle">База, ООП, SOLID, Django, FastAPI</p>
+                    </div>
+                    <div class="category-card__content">
+                        <ul class="grade-list">
+                            <li class="grade-item">
+                                <div class="grade-icon">1</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Стажер</div>
+                                    <div class="grade-description">основы языка, базовые структуры данных</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="стажер" data-category="Python-бэкендеры">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">2</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Джун</div>
+                                    <div class="grade-description">ООП, базы данных, основы веб-разработки</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="джун" data-category="Python-бэкендеры">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">3</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Джун+</div>
+                                    <div class="grade-description">фреймворки, API, тестирование</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="джун+" data-category="Python-бэкендеры">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">4</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Мидл</div>
+                                    <div class="grade-description">архитектура, оптимизация, масштабирование</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="мидл" data-category="Python-бэкендеры">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">5</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Мидл+</div>
+                                    <div class="grade-description">микросервисы, DevOps, высокие нагрузки</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="мидл+" data-category="Python-бэкендеры">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">6</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Синьор+</div>
+                                    <div class="grade-description">системный дизайн, лидерство, менторство</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="синьор+" data-category="Python-бэкендеры">Начать</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Категория 2: Python-аналитики -->
+                <div class="category-card">
+                    <div class="category-card__header">
+                        <h3 class="category-card__title">Python-аналитики</h3>
+                        <p class="category-card__subtitle">База, ООП, pandas, NumPy, Matplotlib, Scikit-learn</p>
+                    </div>
+                    <div class="category-card__content">
+                        <ul class="grade-list">
+                            <li class="grade-item">
+                                <div class="grade-icon">1</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Стажер</div>
+                                    <div class="grade-description">основы анализа данных</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="стажер" data-category="Python-аналитики">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">2</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Джун</div>
+                                    <div class="grade-description">pandas, NumPy, визуализация</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="джун" data-category="Python-аналитики">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">3</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Джун+</div>
+                                    <div class="grade-description">статистика, машинное обучение</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="джун+" data-category="Python-аналитики">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">4</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Мидл</div>
+                                    <div class="grade-description">продвинутые модели, оптимизация</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="мидл" data-category="Python-аналитики">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">5</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Мидл+</div>
+                                    <div class="grade-description">глубокое обучение, большие данные</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="мидл+" data-category="Python-аналитики">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">6</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Синьор+</div>
+                                    <div class="grade-description">исследования, архитектура ML-систем</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="синьор+" data-category="Python-аналитики">Начать</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Категория 3: Базы данных для бэкендеров -->
+                <div class="category-card">
+                    <div class="category-card__header">
+                        <h3 class="category-card__title">Базы данных для бэкендеров</h3>
+                        <p class="category-card__subtitle">PostgreSQL, MySQL, MongoDB, Redis</p>
+                    </div>
+                    <div class="category-card__content">
+                        <ul class="grade-list">
+                            <li class="grade-item">
+                                <div class="grade-icon">1</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Стажер</div>
+                                    <div class="grade-description">основы SQL, простые запросы</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="стажер" data-category="Базы данных">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">2</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Джун</div>
+                                    <div class="grade-description">сложные запросы, индексы</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="джун" data-category="Базы данных">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">3</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Джун+</div>
+                                    <div class="grade-description">оптимизация, NoSQL</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="джун+" data-category="Базы данных">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">4</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Мидл</div>
+                                    <div class="grade-description">проектирование схем, репликация</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="мидл" data-category="Базы данных">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">5</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Мидл+</div>
+                                    <div class="grade-description">шардинг, высокие нагрузки</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="мидл+" data-category="Базы данных">Начать</button>
+                                </div>
+                            </li>
+                            <li class="grade-item">
+                                <div class="grade-icon">6</div>
+                                <div class="grade-info">
+                                    <div class="grade-name">Синьор+</div>
+                                    <div class="grade-description">архитектура БД, отказоустойчивость</div>
+                                </div>
+                                <div class="grade-action">
+                                    <button class="btn btn--secondary grade-btn" data-grade="синьор+" data-category="Базы данных">Начать</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-box">
+                    <h3 class="auth-title">Регистрация</h3>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" id="registerEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerUsername">Имя пользователя</label>
+                            <input type="text" id="registerUsername" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Пароль</label>
+                            <input type="password" id="registerPassword" name="password" required>
+                        </div>
+                        <div class="form-error" id="registerError"></div>
+                        <button type="submit" class="btn btn--primary btn--full">Зарегистрироваться</button>
+                    </form>
+                </div>
+                
+                <div class="auth-box">
+                    <h3 class="auth-title">Вход</h3>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginUsername">Имя пользователя или Email</label>
+                            <input type="text" id="loginUsername" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Пароль</label>
+                            <input type="password" id="loginPassword" name="password" required>
+                        </div>
+                        <div class="form-error" id="loginError"></div>
+                        <button type="submit" class="btn btn--primary btn--full">Войти</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__logo">
+                    <img src="/static/images/logo-black.svg" alt="IT-Грейдер" class="logo">
+                    <p>Подготовка к техническим собеседованиям</p>
+                </div>
+                <div class="footer__links">
+                    <h4>О нас</h4>
+                    <ul>
+                        <li><a href="#">Грейды</a></li>
+                        <li><a href="#">Миссия</a></li>
+                        <li><a href="#">Методика</a></li>
+                        <li><a href="#">Команда</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Продукты</h4>
+                    <ul>
+                        <li><a href="#">IT-Грейдер Basic</a></li>
+                        <li><a href="#">IT-Грейдер Premium</a></li>
+                        <li><a href="#">IT-Грейдер для компаний</a></li>
+                        <li><a href="#">Тесты IT-Грейдер</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Помощь</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Сообщество</a></li>
+                        <li><a href="#">Правила</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <div class="footer__social">
+                    <a href="#" class="social-link"><img src="/static/images/social/facebook.svg" alt="Facebook"></a>
+                    <a href="#" class="social-link"><img src="/static/images/social/twitter.svg" alt="Twitter"></a>
+                    <a href="#" class="social-link"><img src="/static/images/social/instagram.svg" alt="Instagram"></a>
+                </div>
+                <div class="footer__copyright">
+                    <p>&copy; 2025 IT-Грейдер. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Обработка форм регистрации и входа
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const errorElement = document.getElementById('registerError');
+            
+            try {
+                const response = await fetch('/api/v1/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, username, password })
+                });
+                
+                if (response.ok) {
+                    errorElement.textContent = '';
+                    alert('Регистрация успешна! Теперь вы можете войти.');
+                    document.getElementById('registerForm').reset();
+                } else {
+                    const data = await response.json();
+                    errorElement.textContent = data.detail || 'Ошибка при регистрации';
+                }
+            } catch (error) {
+                errorElement.textContent = 'Ошибка при отправке запроса';
+                console.error(error);
+            }
+        });
+        
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorElement = document.getElementById('loginError');
+            
+            try {
+                const formData = new URLSearchParams();
+                formData.append('username', username);
+                formData.append('password', password);
+                
+                const response = await fetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('token', data.access_token);
+                    errorElement.textContent = '';
+                    window.location.href = '/lessons';
+                } else {
+                    const data = await response.json();
+                    errorElement.textContent = data.detail || 'Неверные учетные данные';
+                }
+            } catch (error) {
+                errorElement.textContent = 'Ошибка при отправке запроса';
+                console.error(error);
+            }
+        });
+        
+        // Обработка кнопок в шапке
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            document.querySelector('.auth-section').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('loginUsername').focus();
+        });
+        
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            document.querySelector('.auth-section').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('registerEmail').focus();
+        });
+        
+        document.getElementById('startBtn').addEventListener('click', function() {
+            document.querySelector('.categories').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Обработка кнопок выбора грейда
+        document.querySelectorAll('.grade-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const grade = this.getAttribute('data-grade');
+                const category = this.getAttribute('data-category');
+                
+                // Проверяем, авторизован ли пользователь
+                const token = localStorage.getItem('token');
+                if (token) {
+                    window.location.href = `/lessons?grade=${encodeURIComponent(grade)}&category=${encodeURIComponent(category)}`;
+                } else {
+                    alert('Для доступа к урокам необходимо войти или зарегистрироваться');
+                    document.querySelector('.auth-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

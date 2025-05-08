@@ -14,7 +14,7 @@ from app.schemas.user import TokenData
 # Настройка хеширования паролей
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Настройка OAuth2
+# Настройка OAuth2 - обновляем путь к эндпоинту авторизации
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
 
 def verify_password(plain_password, hashed_password):
@@ -49,12 +49,12 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        user_id: int = payload.get("sub")
+        user_id: str = payload.get("sub")
         
         if user_id is None:
             raise credentials_exception
             
-        token_data = TokenData(user_id=user_id)
+        token_data = TokenData(user_id=int(user_id))
     except JWTError:
         raise credentials_exception
         

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Уроки | Grader</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', path='/images/favicon.png') }}">
+    <style>
+        .lessons-container {
+            padding: 60px 0;
+        }
+        
+        .lessons-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .lessons-title {
+            font-size: 32px;
+            color: var(--text-color);
+        }
+        
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .lesson-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .lesson-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .lesson-card__image {
+            height: 160px;
+            background-color: #f2f2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lesson-card__image img {
+            max-width: 80px;
+            filter: grayscale(100%);
+        }
+        
+        .lesson-card__content {
+            padding: 20px;
+        }
+        
+        .lesson-card__title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .lesson-card__type {
+            font-size: 14px;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .lesson-card__description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .lesson-card__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lesson-card__xp {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .auth-required {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: var(--light-gray);
+            border-radius: 12px;
+            margin: 60px 0;
+        }
+        
+        .auth-required h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        
+        .auth-required p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__container">
+            <div class="header__logo">
+                <a href="/l">
+                    <img src="{{ url_for('static', path='/images/logo.svg') }}" alt="Grader" class="logo">
+                </a>
+            </div>
+            <nav class="header__nav">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#" class="nav-link">КУРСЫ</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">О НАС</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">МЕТОДИКА</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">ПРОГРЕСС</a></li>
+                </ul>
+            </nav>
+            <div class="header__auth">
+                <button class="btn btn--login" id="loginBtn">ВОЙТИ</button>
+                <button class="btn btn--primary" id="registerBtn">РЕГИСТРАЦИЯ</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div id="lessonsContent">
+                <!-- Содержимое будет добавлено через JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно для входа -->
+    <div class="modal" id="loginModal">
+        <div class="modal__content">
+            <span class="modal__close">&times;</span>
+            <h2 class="modal__title">Вход в аккаунт</h2>
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginUsername">Имя пользователя или Email</label>
+                    <input type="text" id="loginUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <div class="form-error" id="loginError"></div>
+                <button type="submit" class="btn btn--primary btn--full">Войти</button>
+            </form>
+            <div class="modal__footer">
+                <p>Нет аккаунта? <a href="#" id="showRegisterModal">Зарегистрироваться</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для регистрации -->
+    <div class="modal" id="registerModal">
+        <div class="modal__content">
+            <span class="modal__close">&times;</span>
+            <h2 class="modal__title">Создать аккаунт</h2>
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerUsername">Имя пользователя</label>
+                    <input type="text" id="registerUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Пароль</label>
+                    <input type="password" id="registerPassword" name="password" required minlength="8">
+                    <small>Минимум 8 символов</small>
+                </div>
+                <div class="form-error" id="registerError"></div>
+                <button type="submit" class="btn btn--primary btn--full">Зарегистрироваться</button>
+            </form>
+            <div class="modal__footer">
+                <p>Уже есть аккаунт? <a href="#" id="showLoginModal">Войти</a></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__logo">
+                    <img src="{{ url_for('static', path='/images/logo.svg') }}" alt="Grader" class="logo">
+                    <p>Изучай языки эффективно</p>
+                </div>
+                <div class="footer__links">
+                    <h4>О нас</h4>
+                    <ul>
+                        <li><a href="#">Курсы</a></li>
+                        <li><a href="#">Миссия</a></li>
+                        <li><a href="#">Методика</a></li>
+                        <li><a href="#">Команда</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Продукты</h4>
+                    <ul>
+                        <li><a href="#">Grader Basic</a></li>
+                        <li><a href="#">Grader Premium</a></li>
+                        <li><a href="#">Grader для школ</a></li>
+                        <li><a href="#">Тесты Grader</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Помощь</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Сообщество</a></li>
+                        <li><a href="#">Правила</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <div class="footer__social">
+                    <a href="#" class="social-link"><img src="{{ url_for('static', path='/images/social/facebook.svg') }}" alt="Facebook"></a>
+                    <a href="#" class="social-link"><img src="{{ url_for('static', path='/images/social/twitter.svg') }}" alt="Twitter"></a>
+                    <a href="#" class="social-link"><img src="{{ url_for('static', path='/images/social/instagram.svg') }}" alt="Instagram"></a>
+                </div>
+                <div class="footer__copyright">
+                    <p>&copy; 2025 Grader. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', path='/js/auth.js') }}"></script>
+    <script>
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedLang = urlParams.get('lang');
+        
+        // Функция для получения уроков
+        async function getLessons() {
+            try {
+                const token = getToken();
+                let url = `${API_URL}/lessons`;
+                
+                if (selectedLang) {
+                    url += `?language=${selectedLang}`;
+                }
+                
+                const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+                
+                const response = await fetch(url, { headers });
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Ошибка при получении уроков');
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('Ошибка при получении уроков:', error);
+                return null;
+            }
+        }
+        
+        // Функция для отображения уроков
+        async function displayLessons() {
+            const lessonsContent = document.getElementById('lessonsContent');
+            
+            if (!isLoggedIn()) {
+                // Если пользователь не авторизован
+                lessonsContent.innerHTML = `
+                    <div class="auth-required">
+                        <h2>Для доступа к урокам необходима авторизация</h2>
+                        <p>Зарегистрируйтесь или войдите в свой аккаунт, чтобы получить доступ к урокам и отслеживать свой прогресс</p>
+                        <div class="auth-buttons">
+                            <button class="btn btn--login" id="authLoginBtn">Войти</button>
+                            <button class="btn btn--primary" id="authRegisterBtn">Зарегистрироваться</button>
+                        </div>
+                    </div>
+                `;
+                
+                // Добавляем обработчики событий
+                document.getElementById('authLoginBtn').addEventListener('click', () => openModal(loginModal));
+                document.getElementById('authRegisterBtn').addEventListener('click', () => openModal(registerModal));
+                
+                return;
+            }
+            
+            // Если пользователь авторизован
+            const lessons = await getLessons();
+            
+            if (!lessons || !lessons.lessons || lessons.lessons.length === 0) {
+                lessonsContent.innerHTML = `
+                    <div class="lessons-container">
+                        <div class="lessons-header">
+                            <h1 class="lessons-title">Уроки ${selectedLang ? `(${selectedLang.toUpperCase()})` : ''}</h1>
+                        </div>
+                        <p>Уроки не найдены. Пожалуйста, попробуйте позже.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Отображаем уроки
+            let lessonsHTML = `
+                <div class="lessons-container">
+                    <div class="lessons-header">
+                        <h1 class="lessons-title">Уроки ${selectedLang ? `(${selectedLang.toUpperCase()})` : ''}</h1>
+                    </div>
+                    <div class="lessons-grid">
+            `;
+            
+            lessons.lessons.forEach(lesson => {
+                lessonsHTML += `
+                    <div class="lesson-card">
+                        <div class="lesson-card__image">
+                            <img src="{{ url_for('static', path='/images/icons/') }}${lesson.type}.svg" alt="${lesson.type}">
+                        </div>
+                        <div class="lesson-card__content">
+                            <h3 class="lesson-card__title">${lesson.title}</h3>
+                            <div class="lesson-card__type">${lesson.type}</div>
+                            <p class="lesson-card__description">${lesson.description}</p>
+                            <div class="lesson-card__footer">
+                                <span class="lesson-card__xp">XP: ${lesson.xp_reward}</span>
+                                <button class="btn btn--secondary" data-lesson-id="${lesson.id}">Начать</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            lessonsHTML += `
+                    </div>
+                </div>
+            `;
+            
+            lessonsContent.innerHTML = lessonsHTML;
+            
+            // Добавляем обработчики для кнопок уроков
+            document.querySelectorAll('[data-lesson-id]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lessonId = btn.getAttribute('data-lesson-id');
+                    window.location.href = `/l/exercise?lesson=${lessonId}`;
+                });
+            });
+        }
+        
+        // Отображаем уроки при загрузке страницы
+        document.addEventListener('DOMContentLoaded', displayLessons);
+    </script>
+</body>
+</html>

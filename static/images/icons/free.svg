@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" rx="40" fill="#f2f2f2"/>
+  <path d="M40 20L45.5 31.5L58 33.5L49 42.5L51.5 55L40 49L28.5 55L31 42.5L22 33.5L34.5 31.5L40 20Z" fill="#777777"/>
+  <path d="M40 25L44 33.5L53 35L46.5 41.5L48.5 50.5L40 46L31.5 50.5L33.5 41.5L27 35L36 33.5L40 25Z" fill="#f2f2f2"/>
+  <path d="M40 30L42 35L47 36L43.5 40L44.5 45L40 42.5L35.5 45L36.5 40L33 36L38 35L40 30Z" fill="#444444"/>
+</svg>

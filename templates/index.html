@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grader - Изучай языки эффективно</title>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>IT-Грейдер - Подготовка к собеседованиям</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', path='/images/favicon.png') }}">
 </head>
 <body>
     <header class="header">
         <div class="container header__container">
             <div class="header__logo">
-                <a href="/">
-                    <img src="images/logo.svg" alt="Grader" class="logo">
+                <a href="/l">
+                    <img src="{{ url_for('static', path='/images/logo.svg') }}" alt="IT-Грейдер" class="logo">
                 </a>
             </div>
             <nav class="header__nav">
                 <ul class="nav-list">
-                    <li class="nav-item"><a href="#" class="nav-link">КУРСЫ</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">ГРЕЙДЫ</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">О НАС</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">МЕТОДИКА</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">ПРОГРЕСС</a></li>
@@ -35,47 +35,61 @@
         <section class="hero">
             <div class="container hero__container">
                 <div class="hero__content">
-                    <h1 class="hero__title">Изучай языки эффективно и с удовольствием</h1>
-                    <p class="hero__text">Grader поможет тебе освоить новый язык с помощью интерактивных упражнений и персонализированного подхода</p>
-                    <button class="btn btn--primary btn--large" id="startBtn">НАЧАТЬ ОБУЧЕНИЕ</button>
+                    <h1 class="hero__title">Подготовься к собеседованию на нужный грейд</h1>
+                    <p class="hero__text">IT-Грейдер поможет тебе подготовиться к техническому собеседованию с помощью интерактивных заданий и персонализированного подхода</p>
+                    <button class="btn btn--primary btn--large" id="startBtn">НАЧАТЬ ПОДГОТОВКУ</button>
                 </div>
                 <div class="hero__image">
-                    <img src="images/duo.svg" alt="Mascot" class="duo-mascot">
+                    <img src="{{ url_for('static', path='/images/duo.svg') }}" alt="Mascot" class="duo-mascot">
                 </div>
             </div>
         </section>
 
         <section class="languages">
             <div class="container">
-                <h2 class="section-title">Выбери язык для изучения</h2>
+                <h2 class="section-title">Выбери грейд для подготовки</h2>
                 <div class="languages__grid">
                     <div class="language-card">
                         <div class="language-card__flag">
-                            <img src="images/flags/en.svg" alt="Английский">
+                            <img src="{{ url_for('static', path='/images/icons/vocabulary.svg') }}" alt="Стажер">
                         </div>
-                        <h3 class="language-card__name">Английский</h3>
-                        <button class="btn btn--secondary language-btn" data-lang="en">Начать</button>
+                        <h3 class="language-card__name">Стажер Python</h3>
+                        <button class="btn btn--secondary language-btn" data-grade="intern">Начать</button>
                     </div>
                     <div class="language-card">
                         <div class="language-card__flag">
-                            <img src="images/flags/es.svg" alt="Испанский">
+                            <img src="{{ url_for('static', path='/images/icons/grammar.svg') }}" alt="Джун">
                         </div>
-                        <h3 class="language-card__name">Испанский</h3>
-                        <button class="btn btn--secondary language-btn" data-lang="es">Начать</button>
+                        <h3 class="language-card__name">Джун Python (бэкенд)</h3>
+                        <button class="btn btn--secondary language-btn" data-grade="junior">Начать</button>
                     </div>
                     <div class="language-card">
                         <div class="language-card__flag">
-                            <img src="images/flags/fr.svg" alt="Французский">
+                            <img src="{{ url_for('static', path='/images/icons/listening.svg') }}" alt="Джун+">
                         </div>
-                        <h3 class="language-card__name">Французский</h3>
-                        <button class="btn btn--secondary language-btn" data-lang="fr">Начать</button>
+                        <h3 class="language-card__name">Джун+ Python (бэкенд)</h3>
+                        <button class="btn btn--secondary language-btn" data-grade="junior-plus">Начать</button>
                     </div>
                     <div class="language-card">
                         <div class="language-card__flag">
-                            <img src="images/flags/de.svg" alt="Немецкий">
+                            <img src="{{ url_for('static', path='/images/icons/speaking.svg') }}" alt="Мидл">
                         </div>
-                        <h3 class="language-card__name">Немецкий</h3>
-                        <button class="btn btn--secondary language-btn" data-lang="de">Начать</button>
+                        <h3 class="language-card__name">Мидл Python (бэкенд)</h3>
+                        <button class="btn btn--secondary language-btn" data-grade="middle">Начать</button>
+                    </div>
+                    <div class="language-card">
+                        <div class="language-card__flag">
+                            <img src="{{ url_for('static', path='/images/icons/reading.svg') }}" alt="Мидл+">
+                        </div>
+                        <h3 class="language-card__name">Мидл+ Python (бэкенд)</h3>
+                        <button class="btn btn--secondary language-btn" data-grade="middle-plus">Начать</button>
+                    </div>
+                    <div class="language-card">
+                        <div class="language-card__flag">
+                            <img src="{{ url_for('static', path='/images/icons/writing.svg') }}" alt="Синьор+">
+                        </div>
+                        <h3 class="language-card__name">Синьор+ Python (бэкенд)</h3>
+                        <button class="btn btn--secondary language-btn" data-grade="senior-plus">Начать</button>
                     </div>
                 </div>
             </div>
@@ -83,28 +97,28 @@
 
         <section class="features">
             <div class="container">
-                <h2 class="section-title">Почему Grader?</h2>
+                <h2 class="section-title">Почему IT-Грейдер?</h2>
                 <div class="features__grid">
                     <div class="feature-card">
                         <div class="feature-card__icon">
-                            <img src="images/icons/science.svg" alt="Научный подход">
+                            <img src="{{ url_for('static', path='/images/icons/science.svg') }}" alt="Актуальные задания">
                         </div>
-                        <h3 class="feature-card__title">Научный подход</h3>
-                        <p class="feature-card__text">Наша методика основана на современных исследованиях в области изучения языков</p>
+                        <h3 class="feature-card__title">Актуальные задания</h3>
+                        <p class="feature-card__text">Задания основаны на реальных вопросах с технических собеседований</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card__icon">
-                            <img src="images/icons/fun.svg" alt="Весело">
+                            <img src="{{ url_for('static', path='/images/icons/fun.svg') }}" alt="Интерактивность">
                         </div>
-                        <h3 class="feature-card__title">Увлекательно</h3>
-                        <p class="feature-card__text">Игровой формат обучения помогает оставаться мотивированным и учиться с удовольствием</p>
+                        <h3 class="feature-card__title">Интерактивность</h3>
+                        <p class="feature-card__text">Выполняй задания в интерактивном режиме и получай мгновенную обратную связь</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card__icon">
-                            <img src="images/icons/free.svg" alt="Персонализация">
+                            <img src="{{ url_for('static', path='/images/icons/free.svg') }}" alt="Персонализация">
                         </div>
                         <h3 class="feature-card__title">Персонализация</h3>
-                        <p class="feature-card__text">Адаптивная система подстраивается под твой уровень и темп обучения</p>
+                        <p class="feature-card__text">Система адаптируется под твой уровень знаний и помогает улучшить слабые места</p>
                     </div>
                 </div>
             </div>
@@ -166,13 +180,13 @@
         <div class="container">
             <div class="footer__grid">
                 <div class="footer__logo">
-                    <img src="images/logo.svg" alt="Grader" class="logo">
-                    <p>Изучай языки эффективно</p>
+                    <img src="{{ url_for('static', path='/images/logo.svg') }}" alt="IT-Грейдер" class="logo">
+                    <p>Подготовка к техническим собеседованиям</p>
                 </div>
                 <div class="footer__links">
                     <h4>О нас</h4>
                     <ul>
-                        <li><a href="#">Курсы</a></li>
+                        <li><a href="#">Грейды</a></li>
                         <li><a href="#">Миссия</a></li>
                         <li><a href="#">Методика</a></li>
                         <li><a href="#">Команда</a></li>
@@ -181,10 +195,10 @@
                 <div class="footer__links">
                     <h4>Продукты</h4>
                     <ul>
-                        <li><a href="#">Grader Basic</a></li>
-                        <li><a href="#">Grader Premium</a></li>
-                        <li><a href="#">Grader для школ</a></li>
-                        <li><a href="#">Тесты Grader</a></li>
+                        <li><a href="#">IT-Грейдер Basic</a></li>
+                        <li><a href="#">IT-Грейдер Premium</a></li>
+                        <li><a href="#">IT-Грейдер для компаний</a></li>
+                        <li><a href="#">Тесты IT-Грейдер</a></li>
                     </ul>
                 </div>
                 <div class="footer__links">
@@ -198,17 +212,17 @@
             </div>
             <div class="footer__bottom">
                 <div class="footer__social">
-                    <a href="#" class="social-link"><img src="images/social/facebook.svg" alt="Facebook"></a>
-                    <a href="#" class="social-link"><img src="images/social/twitter.svg" alt="Twitter"></a>
-                    <a href="#" class="social-link"><img src="images/social/instagram.svg" alt="Instagram"></a>
+                    <a href="#" class="social-link"><img src="{{ url_for('static', path='/images/social/facebook.svg') }}" alt="Facebook"></a>
+                    <a href="#" class="social-link"><img src="{{ url_for('static', path='/images/social/twitter.svg') }}" alt="Twitter"></a>
+                    <a href="#" class="social-link"><img src="{{ url_for('static', path='/images/social/instagram.svg') }}" alt="Instagram"></a>
                 </div>
                 <div class="footer__copyright">
-                    <p>&copy; 2025 Grader. Все права защищены.</p>
+                    <p>&copy; 2025 IT-Грейдер. Все права защищены.</p>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script src="js/auth.js"></script>
+    <script src="{{ url_for('static', path='/js/auth.js') }}"></script>
 </body>
 </html>
