@@ -279,8 +279,29 @@ async def lessons_page(request: Request):
         </footer>
 
         <script>
-            // Проверяем авторизацию
-            const token = localStorage.getItem('token');
+            // Функция для получения значения куки
+            function getCookie(name) {
+                const nameEQ = name + '=';
+                const ca = document.cookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+            
+            // Проверяем авторизацию (сначала в localStorage, затем в куках)
+            let token = localStorage.getItem('token');
+            if (!token) {
+                // Если токен не найден в localStorage, проверяем куки
+                token = getCookie('authToken');
+                if (token) {
+                    // Если токен найден в куках, сохраняем его в localStorage
+                    localStorage.setItem('token', token);
+                }
+            }
+            
             const noAuthBlock = document.getElementById('noAuth');
             const lessonsContent = document.getElementById('lessonsContent');
             const userInfo = document.getElementById('userInfo');
@@ -330,7 +351,7 @@ async def lessons_page(request: Request):
                 // Примеры уроков в зависимости от выбранного грейда и категории
                 let lessonsHTML = '<div class="lessons-grid">';
                 
-                if (category && category.includes('Python-бэкендеры')) {
+                if (category && category.includes('Python-бэкенд')) {
                     if (grade === 'стажер') {
                         lessonsHTML += `
                             <div class="lesson-card">
@@ -394,7 +415,7 @@ async def lessons_page(request: Request):
                             </div>
                         `;
                     }
-                } else if (category && category.includes('Python-аналитики')) {
+                } else if (category && category.includes('Python-аналитик')) {
                     if (grade === 'стажер') {
                         lessonsHTML += `
                             <div class="lesson-card">
@@ -520,9 +541,15 @@ async def lessons_page(request: Request):
                 showNoAuth();
             }
             
+            // Функция для удаления куки
+            function eraseCookie(name) {
+                document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            }
+            
             // Обработчик для кнопки выхода
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('token');
+                eraseCookie('authToken');
                 window.location.href = '/';
             });
             
