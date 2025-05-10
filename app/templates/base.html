@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}IT-Грейдер{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__logo">
+                <a href="/"><img src="{{ url_for('static', path='/images/logo_grader.png') }}" alt="IT-Грейдер" class="logo"></a>
+            </div>
+            <nav class="header__nav">
+                <ul class="nav-list">
+                    <li><a href="/" class="nav-link">Грейды</a></li>
+                    <li><a href="/lessons" class="nav-link">Обучение</a></li>
+                    <li><a href="/ratings" class="nav-link">Рейтинг</a></li>
+                    <li><a href="/achievements" class="nav-link">Достижения</a></li>
+                </ul>
+            </nav>
+            <div class="header__auth" id="headerAuth">
+                <a href="/login" class="btn btn--secondary">Войти</a>
+                <a href="/register" class="btn btn--primary">Регистрация</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__logo">
+                    <a href="/"><img src="{{ url_for('static', path='/images/logo_grader.png') }}" alt="IT-Грейдер" class="logo"></a>
+                    <p>Подготовка к техническим собеседованиям</p>
+                </div>
+                <div class="footer__links">
+                    <h4>О нас</h4>
+                    <ul>
+                        <li><a href="#">Грейды</a></li>
+                        <li><a href="#">Миссия</a></li>
+                        <li><a href="#">Методика</a></li>
+                        <li><a href="#">Команда</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Продукты</h4>
+                    <ul>
+                        <li><a href="#">IT-Грейдер Basic</a></li>
+                        <li><a href="#">IT-Грейдер Premium</a></li>
+                        <li><a href="#">IT-Грейдер для компаний</a></li>
+                        <li><a href="#">Тесты IT-Грейдер</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Помощь</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Сообщество</a></li>
+                        <li><a href="#">Правила</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <div class="footer__copyright">
+                    <p>&copy; 2025 IT-Грейдер. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Проверка авторизации пользователя
+        document.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const response = await fetch('/api/v1/users/me', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const userData = await response.json();
+                        
+                        // Обновляем шапку сайта
+                        const headerAuth = document.getElementById('headerAuth');
+                        headerAuth.innerHTML = `
+                            <div class="user-info">
+                                <span class="user-greeting">Привет, ${userData.username}!</span>
+                                <a href="/profile" class="btn btn--secondary">Профиль</a>
+                                <button class="btn btn--secondary" id="logoutBtn">Выйти</button>
+                            </div>
+                        `;
+                        
+                        // Добавляем обработчик для кнопки выхода
+                        document.getElementById('logoutBtn').addEventListener('click', function() {
+                            localStorage.removeItem('token');
+                            document.cookie = 'authToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                            window.location.reload();
+                        });
+                    } else {
+                        // Если токен недействителен, удаляем его
+                        localStorage.removeItem('token');
+                        document.cookie = 'authToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    }
+                } catch (error) {
+                    console.error('Ошибка при проверке авторизации:', error);
+                    localStorage.removeItem('token');
+                    document.cookie = 'authToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                }
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

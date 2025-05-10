@@ -411,14 +411,22 @@
                     const userData = await response.json();
                     
                     // Обновляем шапку сайта
+                    const headerContainer = document.querySelector('.header__container');
                     const headerAuth = document.querySelector('.header__auth');
-                    headerAuth.innerHTML = `
-                        <div class="user-info">
-                            <span class="user-greeting">Привет, ${userData.username}!</span>
-                            <button class="btn btn--secondary" id="dashboardBtn">Мой прогресс</button>
-                            <button class="btn btn--secondary" id="logoutBtn">Выйти</button>
-                        </div>
+                    
+                    // Удаляем старый блок авторизации
+                    headerAuth.remove();
+                    
+                    // Добавляем новый блок авторизации после навигации
+                    const headerNav = document.querySelector('.header__nav');
+                    const userAuthBlock = document.createElement('div');
+                    userAuthBlock.className = 'header__user-auth';
+                    userAuthBlock.innerHTML = `
+                        <span class="user-greeting">Привет, ${userData.username}!</span>
+                        <button class="btn btn--secondary nav-btn" id="profileBtn">Профиль</button>
+                        <button class="btn btn--secondary nav-btn" id="logoutBtn">Выйти</button>
                     `;
+                    headerContainer.appendChild(userAuthBlock);
                     
                     // Скрываем секцию с формами авторизации
                     const authSection = document.querySelector('.auth-section');

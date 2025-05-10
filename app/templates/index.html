@@ -1,0 +1,381 @@
+{% extends "base.html" %}
+
+{% block title %}IT-Грейдер - Подготовка к собеседованиям{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero__container">
+        <div class="hero__content">
+            <h1 class="hero__title">Подготовься к собеседованию на нужный грейд</h1>
+            <p class="hero__text">IT-Грейдер поможет тебе подготовиться к техническому собеседованию с помощью интерактивных заданий и персонализированного подхода</p>
+            <button class="btn btn--primary btn--large" id="startBtn">НАЧАТЬ ПОДГОТОВКУ</button>
+        </div>
+        <div class="hero__image">
+            <img src="{{ url_for('static', path='/images/logo_grader.png') }}" alt="IT-Грейдер Логотип">
+        </div>
+    </div>
+</section>
+
+<section class="categories">
+    <div class="container">
+        <h2 class="section-title">Выбери грейд для подготовки</h2>
+        
+        <div class="categories__grid">
+            <!-- Категория 1: Python-бэкендеры -->
+            <div class="category-card">
+                <div class="category-card__header">
+                    <h3 class="category-card__title">Python-бэкендеры</h3>
+                    <p class="category-card__subtitle">База, ООП, SOLID, Django, FastAPI</p>
+                </div>
+                <div class="category-card__content">
+                    <ul class="grade-list">
+                        <li class="grade-item">
+                            <div class="grade-icon">1</div>
+                            <div class="grade-info">
+                                <div class="grade-name">Стажер</div>
+                                <div class="grade-description">основы языка, базовые структуры данных</div>
+                            </div>
+                            <div class="grade-action">
+                                <button class="btn btn--secondary grade-btn" data-grade="стажер" data-category="Python-бэкендеры">Начать</button>
+                            </div>
+                        </li>
+                        <li class="grade-item">
+                            <div class="grade-icon">2</div>
+                            <div class="grade-info">
+                                <div class="grade-name">Джун</div>
+                                <div class="grade-description">ООП, базы данных, основы веб-разработки</div>
+                            </div>
+                            <div class="grade-action">
+                                <button class="btn btn--secondary grade-btn" data-grade="джун" data-category="Python-бэкендеры">Начать</button>
+                            </div>
+                        </li>
+                        <li class="grade-item">
+                            <div class="grade-icon">3</div>
+                            <div class="grade-info">
+                                <div class="grade-name">Джун+</div>
+                                <div class="grade-description">фреймворки, API, тестирование</div>
+                            </div>
+                            <div class="grade-action">
+                                <button class="btn btn--secondary grade-btn" data-grade="джун+" data-category="Python-бэкендеры">Начать</button>
+                            </div>
+                        </li>
+                        <li class="grade-item">
+                            <div class="grade-icon">4</div>
+                            <div class="grade-info">
+                                <div class="grade-name">Мидл</div>
+                                <div class="grade-description">архитектура, оптимизация, масштабирование</div>
+                            </div>
+                            <div class="grade-action">
+                                <button class="btn btn--secondary grade-btn" data-grade="мидл" data-category="Python-бэкендеры">Начать</button>
+                            </div>
+                        </li>
+                        <li class="grade-item">
+                            <div class="grade-icon">5</div>
+                            <div class="grade-info">
+                                <div class="grade-name">Мидл+</div>
+                                <div class="grade-description">микросервисы, DevOps, высокие нагрузки</div>
+                            </div>
+                            <div class="grade-action">
+                                <button class="btn btn--secondary grade-btn" data-grade="мидл+" data-category="Python-бэкендеры">Начать</button>
+                            </div>
+                        </li>
+                        <li class="grade-item">
+                            <div class="grade-icon">6</div>
+                            <div class="grade-info">
+                                <div class="grade-name">Синьор+</div>
+                                <div class="grade-description">системный дизайн, лидерство, менторство</div>
+                            </div>
+                            <div class="grade-action">
+                                <button class="btn btn--secondary grade-btn" data-grade="синьор+" data-category="Python-бэкендеры">Начать</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Категория 2: Python-аналитики -->
+            <div class="category-card">
+                <div class="category-card__header">
+                    <h3 class="category-card__title">Python-аналитики</h3>
+                    <p class="category-card__subtitle">База, ООП, pandas, NumPy, Matplotlib, Scikit-learn</p>
+                </div>
+                <div class="category-card__content">
+                    <ul class="grade-list">
+                        <li class="grade-item">
+                            <div class="grade-icon">1</div>
+                            <div class="grade-info">
+                                <div class="grade-name">Стажер</div>
+                                <div class="grade-description">основы анализа данных</div>
+                            </div>
+                            <div class="grade-action">
+                                <button class="btn btn--secondary grade-btn" data-grade="стажер" data-category="Python-аналитики">Начать</button>
+                            </div>
+                        </li>
+                        <!-- Другие грейды для Python-аналитиков -->
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Категория 3: Базы данных для бэкендеров -->
+            <div class="category-card">
+                <div class="category-card__header">
+                    <h3 class="category-card__title">Базы данных для бэкендеров</h3>
+                    <p class="category-card__subtitle">PostgreSQL, MySQL, MongoDB, Redis</p>
+                </div>
+                <div class="category-card__content">
+                    <ul class="grade-list">
+                        <li class="grade-item">
+                            <div class="grade-icon">1</div>
+                            <div class="grade-info">
+                                <div class="grade-name">Стажер</div>
+                                <div class="grade-description">основы SQL, простые запросы</div>
+                            </div>
+                            <div class="grade-action">
+                                <button class="btn btn--secondary grade-btn" data-grade="стажер" data-category="Базы данных">Начать</button>
+                            </div>
+                        </li>
+                        <!-- Другие грейды для баз данных -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="auth-section" id="auth-section">
+    <div class="container">
+        <div class="auth-container" id="auth-container">
+            <div class="auth-box">
+                <h3 class="auth-title">Регистрация</h3>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerUsername">Имя пользователя</label>
+                        <input type="text" id="registerUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Пароль</label>
+                        <input type="password" id="registerPassword" name="password" required>
+                    </div>
+                    <div class="form-error" id="registerError"></div>
+                    <button type="submit" class="btn btn--primary btn--full">Зарегистрироваться</button>
+                </form>
+            </div>
+            
+            <div class="auth-box">
+                <h3 class="auth-title">Вход</h3>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginUsername">Имя пользователя или Email</label>
+                        <input type="text" id="loginUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <div class="form-error" id="loginError"></div>
+                    <button type="submit" class="btn btn--primary btn--full">Войти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Функция для установки куки
+    function setCookie(name, value, days) {
+        let expires = '';
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = '; expires=' + date.toUTCString();
+        }
+        document.cookie = name + '=' + (value || '') + expires + '; path=/; SameSite=Lax';
+    }
+    
+    // Функция для получения значения куки
+    function getCookie(name) {
+        const nameEQ = name + '=';
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+    
+    // Функция для удаления куки
+    function eraseCookie(name) {
+        document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+    
+    // Функция для обновления UI для авторизованного пользователя
+    async function updateUIForLoggedInUser() {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            
+            const response = await fetch('/api/v1/users/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.ok) {
+                const userData = await response.json();
+                
+                // Скрываем секцию с формами авторизации
+                const authSection = document.getElementById('auth-section');
+                if (authSection) {
+                    authSection.style.display = 'none';
+                }
+                
+                // Добавляем секцию с информацией для авторизованного пользователя
+                const authContainer = document.getElementById('auth-container');
+                if (authContainer) {
+                    const parentSection = authContainer.parentElement;
+                    
+                    // Создаем новый элемент для отображения информации авторизованного пользователя
+                    const loggedInSection = document.createElement('div');
+                    loggedInSection.className = 'logged-in-section';
+                    loggedInSection.innerHTML = `
+                        <div class="container">
+                            <div class="logged-in-box">
+                                <h2>Добро пожаловать, ${userData.username}!</h2>
+                                <p>Вы уже авторизованы в системе. Выберите грейд для подготовки или перейдите к вашим урокам.</p>
+                                <div class="logged-in-actions">
+                                    <a href="/lessons" class="btn btn--primary btn--large">Перейти к урокам</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Заменяем секцию авторизации на секцию для авторизованного пользователя
+                    parentSection.replaceChild(loggedInSection, authContainer);
+                }
+            } else {
+                // Если токен недействителен, удаляем его
+                localStorage.removeItem('token');
+                eraseCookie('authToken');
+            }
+        } catch (error) {
+            console.error('Ошибка при обновлении UI:', error);
+        }
+    }
+    
+    // Проверяем наличие токена в куках при загрузке страницы
+    document.addEventListener('DOMContentLoaded', async function() {
+        const cookieToken = getCookie('authToken');
+        if (cookieToken) {
+            localStorage.setItem('token', cookieToken);
+            // Если есть токен, обновляем UI для авторизованного пользователя
+            await updateUIForLoggedInUser();
+        }
+        
+        // Обработка форм регистрации и входа
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const errorElement = document.getElementById('registerError');
+            
+            try {
+                const response = await fetch('/api/v1/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, username, password })
+                });
+                
+                if (response.ok) {
+                    errorElement.textContent = '';
+                    alert('Регистрация успешна! Теперь вы можете войти.');
+                    document.getElementById('registerForm').reset();
+                } else {
+                    const data = await response.json();
+                    errorElement.textContent = data.detail || 'Ошибка при регистрации';
+                }
+            } catch (error) {
+                errorElement.textContent = 'Ошибка при отправке запроса';
+                console.error(error);
+            }
+        });
+        
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorElement = document.getElementById('loginError');
+            
+            try {
+                const formData = new URLSearchParams();
+                formData.append('username', username);
+                formData.append('password', password);
+                
+                const response = await fetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const token = data.access_token;
+                    
+                    // Сохраняем токен в localStorage для текущей сессии
+                    localStorage.setItem('token', token);
+                    
+                    // Сохраняем токен в куки на 30 дней
+                    setCookie('authToken', token, 30);
+                    
+                    errorElement.textContent = '';
+                    
+                    // Обновляем UI для авторизованного пользователя
+                    await updateUIForLoggedInUser();
+                    
+                    // Перезагружаем страницу для обновления шапки
+                    window.location.reload();
+                } else {
+                    const data = await response.json();
+                    errorElement.textContent = data.detail || 'Неверные учетные данные';
+                }
+            } catch (error) {
+                errorElement.textContent = 'Ошибка при отправке запроса';
+                console.error(error);
+            }
+        });
+        
+        // Обработка кнопок выбора грейда
+        document.querySelectorAll('.grade-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const grade = this.getAttribute('data-grade');
+                const category = this.getAttribute('data-category');
+                
+                // Проверяем, авторизован ли пользователь
+                const token = localStorage.getItem('token');
+                if (token) {
+                    window.location.href = `/lessons?grade=${encodeURIComponent(grade)}&category=${encodeURIComponent(category)}`;
+                } else {
+                    alert('Для доступа к урокам необходимо войти или зарегистрироваться');
+                    document.querySelector('.auth-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+        
+        // Обработка кнопки "Начать подготовку"
+        document.getElementById('startBtn').addEventListener('click', function() {
+            document.querySelector('.categories').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+</script>
+{% endblock %}

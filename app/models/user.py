@@ -1,17 +1,23 @@
-from sqlalchemy import Boolean, Column, Integer, String, DateTime
-from sqlalchemy.sql import func
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Float
+from sqlalchemy.orm import relationship
+from datetime import datetime
+
 from app.core.database import Base
 
 class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    username = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    __tablename__ = 'users'
+    user_id = Column(Integer, primary_key=True)
+    username = Column(String(50), nullable=False, unique=True)
+    email = Column(String(100), nullable=False, unique=True)
+    password_hash = Column(String(255), nullable=False)
+    first_name = Column(String(50))
+    last_name = Column(String(50))
     is_active = Column(Boolean, default=True)
-    xp_points = Column(Integer, default=0)
-    streak_days = Column(Integer, default=0)
-    last_activity = Column(DateTime(timezone=True), default=func.now())
-    created_at = Column(DateTime(timezone=True), default=func.now())
-    updated_at = Column(DateTime(timezone=True), default=func.now(), onupdate=func.now())
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Отношения
+    progress = relationship("UserProgress", back_populates="user")
+    achievements = relationship("UserAchievement", back_populates="user")
+    
+    def __repr__(self):
+        return f"<User(user_id={self.user_id}, username='{self.username}')>"

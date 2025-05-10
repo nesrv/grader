@@ -24,25 +24,6 @@ def get_password_hash(password):
     """Хеширование пароля"""
     return pwd_context.hash(password)
 
-def get_user_by_email(db: Session, email: str):
-    """Получение пользователя по email"""
-    return db.query(User).filter(User.email == email).first()
-
-def get_user_by_username(db: Session, username: str):
-    """Получение пользователя по имени пользователя"""
-    return db.query(User).filter(User.username == username).first()
-
-def authenticate_user(db: Session, username: str, password: str):
-    """Аутентификация пользователя"""
-    user = get_user_by_username(db, username)
-    if not user:
-        user = get_user_by_email(db, username)
-    if not user:
-        return False
-    if not verify_password(password, user.password_hash):
-        return False
-    return user
-
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Создание JWT токена"""
     to_encode = data.copy()
@@ -53,21 +34,6 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
-
-def create_user(db: Session, user):
-    """Создание нового пользователя"""
-    hashed_password = get_password_hash(user.password)
-    db_user = User(
-        username=user.username,
-        email=user.email,
-        password_hash=hashed_password,
-        first_name=user.first_name if hasattr(user, 'first_name') else None,
-        last_name=user.last_name if hasattr(user, 'last_name') else None
-    )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """Получение текущего пользователя по токену"""
@@ -84,13 +50,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     except JWTError:
         raise credentials_exception
     
-    user = get_user_by_username(db, username)
+    user = db.query(User).filter(User.username == username).first()
     if user is None:
         raise credentials_exception
     return user
-
-def get_current_active_user(current_user: User = Depends(get_current_user)):
-    """Проверка, что пользователь активен"""
-    if not current_user.is_active:
-        raise HTTPException(status_code=400, detail="Неактивный пользователь")
-    return current_user
