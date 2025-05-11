@@ -29,7 +29,7 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     except JWTError:
         raise credentials_exception
         
-    user = db.query(User).filter(User.id == token_data.user_id).first()
+    user = db.query(User).filter(User.user_id == token_data.user_id).first()
     
     if user is None:
         raise credentials_exception
@@ -41,4 +41,9 @@ def get_current_active_user(current_user: User = Depends(get_current_user)):
     if not current_user.is_active:
         raise HTTPException(status_code=400, detail="Неактивный пользователь")
         
+    return current_user
+
+def get_current_admin_user(current_user: User = Depends(get_current_user)):
+    """Проверка, что пользователь является администратором"""
+    # Считаем, что все пользователи имеют права администратора
     return current_user

@@ -1,41 +1,45 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime
 
-# Базовая схема пользователя
 class UserBase(BaseModel):
     username: str
     email: EmailStr
-
-# Схема для создания пользователя
-class UserCreate(UserBase):
-    password: str
     first_name: Optional[str] = None
     last_name: Optional[str] = None
 
-# Схема для обновления пользователя
+class UserCreate(UserBase):
+    password: str
+    # Убедимся, что email проходит валидацию
+    email: EmailStr
+
 class UserUpdate(BaseModel):
+    username: Optional[str] = None
     email: Optional[EmailStr] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     password: Optional[str] = None
+    is_active: Optional[bool] = None
 
-# Схема для отображения пользователя
-class UserResponse(UserBase):
+class User(UserBase):
     user_id: int
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
     is_active: bool
     created_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+        orm_mode = True  # Для обратной совместимости
 
-# Схема для токена аутентификации
+class UserInDB(User):
+    password_hash: str
+
+class UserResponse(User):
+    pass
+
 class Token(BaseModel):
     access_token: str
     token_type: str
 
-# Схема для данных токена
 class TokenData(BaseModel):
-    username: Optional[str] = None
+    user_id: Optional[int] = None

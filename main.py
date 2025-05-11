@@ -9,9 +9,11 @@ from pathlib import Path
 from app.api.v1.router import api_router
 from app.core.config import settings
 from app.core.database import Base, engine
+# from app.db_init import init_db  # Закомментируем эту строку
 
 # Создаем таблицы в базе данных
 Base.metadata.create_all(bind=engine)
+# init_db()  # Закомментируем эту строку
 
 # Определяем базовый путь проекта
 BASE_PATH = Path(__file__).resolve().parent
@@ -97,6 +99,11 @@ async def admin_login_page(request: Request):
 async def admin_dashboard_page(request: Request):
     """Отображение главной страницы админки"""
     return templates.TemplateResponse("admin/dashboard.html", {"request": request})
+
+@app.get("/admin/professions", response_class=HTMLResponse)
+async def admin_professions_page(request: Request):
+    """Отображение страницы со списком специальностей"""
+    return templates.TemplateResponse("admin/profession.html", {"request": request})
 
 @app.get("/favicon.ico")
 async def favicon():

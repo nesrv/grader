@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление специальностями | IT-Грейдер</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+    <style>
+        .admin-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .admin-header__container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-header__logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-header__logo img {
+            height: 40px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+        
+        .admin-header__title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .admin-header__user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .admin-sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            bottom: 0;
+            width: 250px;
+            background-color: var(--background-color);
+            box-shadow: 2px 0 5px var(--shadow-color);
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        .admin-sidebar__menu {
+            list-style: none;
+        }
+        
+        .admin-sidebar__menu-item {
+            padding: 0;
+        }
+        
+        .admin-sidebar__menu-link {
+            display: block;
+            padding: 12px 20px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .admin-sidebar__menu-link:hover,
+        .admin-sidebar__menu-link.active {
+            background-color: var(--light-gray);
+        }
+        
+        .admin-content {
+            margin-left: 250px;
+            margin-top: 70px;
+            padding: 30px;
+            min-height: calc(100vh - 70px);
+            background-color: var(--light-gray);
+        }
+        
+        .admin-card {
+            background-color: var(--background-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            margin-bottom: 30px;
+        }
+        
+        .admin-card__title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-table th {
+            background-color: var(--light-gray);
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .admin-table tr:hover {
+            background-color: var(--light-gray);
+        }
+        
+        .admin-table__actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .admin-table__btn {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        
+        .admin-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .admin-search {
+            display: flex;
+            gap: 10px;
+            max-width: 400px;
+        }
+        
+        .admin-search__input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .admin-search__input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .admin-form {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+        }
+        
+        .admin-form.active {
+            display: block;
+        }
+        
+        .admin-form__title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        
+        .admin-form__group {
+            margin-bottom: 15px;
+        }
+        
+        .admin-form__label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .admin-form__input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .admin-form__input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .admin-form__textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .admin-form__textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .admin-form__buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .admin-form__error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .admin-form__success {
+            color: #2ecc71;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .admin-tabs__item {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .admin-tabs__item.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .admin-tab-content {
+            display: none;
+        }
+        
+        .admin-tab-content.active {
+            display: block;
+        }
+        
+        .admin-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            color: var(--text-light);
+        }
+        
+        .admin-loading::after {
+            content: "...";
+            animation: loading-dots 1.5s infinite;
+        }
+        
+        @keyframes loading-dots {
+            0% { content: "."; }
+            33% { content: ".."; }
+            66% { content: "..."; }
+        }
+        
+        .admin-error {
+            padding: 20px;
+            text-align: center;
+            color: #e74c3c;
+            background-color: #fdf3f2;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="container admin-header__container">
+            <div class="admin-header__logo">
+                <img src="{{ url_for('static', path='/images/logo_grader.png') }}" alt="IT-Грейдер">
+                <span class="admin-header__title">Админ-панель</span>
+            </div>
+            <div class="admin-header__user">
+                <span>Администратор</span>
+                <button class="btn btn--secondary" id="logoutBtn">Выйти</button>
+            </div>
+        </div>
+    </header>
+    
+    <aside class="admin-sidebar">
+        <ul class="admin-sidebar__menu">
+            <li class="admin-sidebar__menu-item">
+                <a href="/admin/dashboard" class="admin-sidebar__menu-link">Главная</a>
+            </li>
+            <li class="admin-sidebar__menu-item">
+                <a href="/admin/professions" class="admin-sidebar__menu-link active">Специальности</a>
+            </li>
+            <li class="admin-sidebar__menu-item">
+                <a href="/admin/topics" class="admin-sidebar__menu-link">Темы</a>
+            </li>
+            <li class="admin-sidebar__menu-item">
+                <a href="/admin/users" class="admin-sidebar__menu-link">Пользователи</a>
+            </li>
+            <li class="admin-sidebar__menu-item">
+                <a href="/admin/settings" class="admin-sidebar__menu-link">Настройки</a>
+            </li>
+        </ul>
+    </aside>
+    
+    <main class="admin-content">
+        <div class="admin-card">
+            <div class="admin-toolbar">
+                <h1 class="admin-card__title">Управление специальностями</h1>
+                <div>
+                    <button class="btn btn--primary" id="addProfessionBtn">Добавить специальность</button>
+                </div>
+            </div>
+            
+            <!-- Форма для добавления/редактирования специальности -->
+            <div class="admin-form" id="professionForm">
+                <h3 class="admin-form__title" id="formTitle">Добавление новой специальности</h3>
+                <div class="admin-form__group">
+                    <label for="professionName" class="admin-form__label">Название специальности</label>
+                    <input type="text" id="professionName" class="admin-form__input" placeholder="Например: JavaScript-фронтендер">
+                </div>
+                <div class="admin-form__group">
+                    <label for="professionDescription" class="admin-form__label">Описание специальности</label>
+                    <textarea id="professionDescription" class="admin-form__textarea" placeholder="Краткое описание специальности"></textarea>
+                </div>
+                <input type="hidden" id="professionId" value="">
+                <div class="admin-form__error" id="professionFormError"></div>
+                <div class="admin-form__success" id="professionFormSuccess"></div>
+                <div class="admin-form__buttons">
+                    <button class="btn btn--secondary" id="cancelProfessionBtn">Отмена</button>
+                    <button class="btn btn--primary" id="saveProfessionBtn">Сохранить</button>
+                </div>
+            </div>
+            
+            <!-- Таблица специальностей -->
+            <div id="professionsTableContainer">
+                <div class="admin-loading">Загрузка специальностей</div>
+            </div>
+            
+            <!-- Вкладки для управления грейдами, модулями и темами -->
+            <div class="admin-tabs" id="entityTabs">
+                <div class="admin-tabs__item active" data-tab="grades">Грейды</div>
+                <div class="admin-tabs__item" data-tab="modules">Модули</div>
+                <div class="admin-tabs__item" data-tab="topics">Темы</div>
+            </div>
+            
+            <!-- Содержимое вкладок -->
+            <div class="admin-tab-content active" id="gradesTab">
+                <div class="admin-toolbar">
+                    <h2>Грейды</h2>
+                    <button class="btn btn--primary" id="addGradeBtn" disabled>Добавить грейд</button>
+                </div>
+                <div id="gradesTableContainer">
+                    <div class="admin-error">Выберите специальность для просмотра грейдов</div>
+                </div>
+            </div>
+            
+            <div class="admin-tab-content" id="modulesTab">
+                <div class="admin-toolbar">
+                    <h2>Модули</h2>
+                    <button class="btn btn--primary" id="addModuleBtn" disabled>Добавить модуль</button>
+                </div>
+                <div id="modulesTableContainer">
+                    <div class="admin-error">Выберите специальность для просмотра модулей</div>
+                </div>
+            </div>
+            
+            <div class="admin-tab-content" id="topicsTab">
+                <div class="admin-toolbar">
+                    <h2>Темы</h2>
+                    <button class="btn btn--primary" id="addTopicBtn" disabled>Добавить тему</button>
+                </div>
+                <div id="topicsTableContainer">
+                    <div class="admin-error">Выберите модуль для просмотра тем</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Проверка авторизации
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAdminLoggedIn = localStorage.getItem('adminLoggedIn');
+            
+            if (!isAdminLoggedIn) {
+                window.location.href = '/admin';
+                return;
+            }
+            
+            // Обработчик для кнопки выхода
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('adminLoggedIn');
+                window.location.href = '/admin';
+            });
+            
+            // Загрузка специальностей
+            loadProfessions();
+            
+            // Обработчики для формы специальности
+            const addProfessionBtn = document.getElementById('addProfessionBtn');
+            const professionForm = document.getElementById('professionForm');
+            const cancelProfessionBtn = document.getElementById('cancelProfessionBtn');
+            const saveProfessionBtn = document.getElementById('saveProfessionBtn');
+            
+            addProfessionBtn.addEventListener('click', function() {
+                document.getElementById('formTitle').textContent = 'Добавление новой специальности';
+                document.getElementById('professionId').value = '';
+                document.getElementById('professionName').value = '';
+                document.getElementById('professionDescription').value = '';
+                document.getElementById('professionFormError').textContent = '';
+                document.getElementById('professionFormSuccess').textContent = '';
+                professionForm.classList.add('active');
+                document.getElementById('professionName').focus();
+            });
+            
+            cancelProfessionBtn.addEventListener('click', function() {
+                professionForm.classList.remove('active');
+            });
+            
+            saveProfessionBtn.addEventListener('click', function() {
+                saveProfession();
+            });
+            
+            // Обработчики для вкладок
+            const tabItems = document.querySelectorAll('.admin-tabs__item');
+            const tabContents = document.querySelectorAll('.admin-tab-content');
+            
+            tabItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Убираем активный класс со всех вкладок
+                    tabItems.forEach(tab => tab.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Добавляем активный класс выбранной вкладке
+                    this.classList.add('active');
+                    document.getElementById(`${tabId}Tab`).classList.add('active');
+                });
+            });
+        });
+        
+        // Функция для загрузки специальностей
+        async function loadProfessions() {
+            const tableContainer = document.getElementById('professionsTableContainer');
+            
+            try {
+                const response = await fetch('/api/v1/professions/');
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке специальностей');
+                }
+                
+                const professions = await response.json();
+                
+                if (professions.length === 0) {
+                    tableContainer.innerHTML = '<div class="admin-error">Нет доступных специальностей</div>';
+                    return;
+                }
+                
+                let tableHtml = `
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Описание</th>
+                                <th>Кол-во грейдов</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                professions.forEach(profession => {
+                    const gradesCount = profession.grades ? profession.grades.length : 0;
+                    
+                    tableHtml += `
+                        <tr data-profession-id="${profession.profession_id}">
+                            <td>${profession.profession_id}</td>
+                            <td>${profession.name}</td>
+                            <td>${profession.description || '-'}</td>
+                            <td>${gradesCount}</td>
+                            <td class="admin-table__actions">
+                                <button class="btn btn--secondary admin-table__btn" onclick="editProfession(${profession.profession_id})">Редактировать</button>
+                                <button class="btn btn--secondary admin-table__btn" onclick="deleteProfession(${profession.profession_id})">Удалить</button>
+                                <button class="btn btn--secondary admin-table__btn" onclick="selectProfession(${profession.profession_id})">Выбрать</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableHtml += `
+                        </tbody>
+                    </table>
+                `;
+                
+                tableContainer.innerHTML = tableHtml;
+                
+            } catch (error) {
+                console.error('Ошибка при загрузке специальностей:', error);
+                tableContainer.innerHTML = `
+                    <div class="admin-error">
+                        <p>Не удалось загрузить специальности</p>
+                        <p>Ошибка: ${error.message}</p>
+                        <button class="btn btn--secondary" onclick="loadProfessions()">Повторить</button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Функция для сохранения специальности (создание или обновление)
+        async function saveProfession() {
+            const professionId = document.getElementById('professionId').value;
+            const name = document.getElementById('professionName').value.trim();
+            const description = document.getElementById('professionDescription').value.trim();
+            const errorElement = document.getElementById('professionFormError');
+            const successElement = document.getElementById('professionFormSuccess');
+            
+            // Очищаем предыдущие сообщения
+            errorElement.textContent = '';
+            successElement.textContent = '';
+            
+            // Проверка валидности данных
+            if (!name) {
+                errorElement.textContent = 'Название специальности не может быть пустым';
+                return;
+            }
+            
+            try {
+                let response;
+                let method;
+                let url;
+                
+                if (professionId) {
+                    // Обновление существующей специальности
+                    method = 'PUT';
+                    url = `/api/v1/professions/${professionId}`;
+                } else {
+                    // Создание новой специальности
+                    method = 'POST';
+                    url = '/api/v1/professions/';
+                }
+                
+                response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        description: description || null
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Ошибка при сохранении специальности');
+                }
+                
+                const savedProfession = await response.json();
+                
+                // Если это новая специальность, добавляем грейды
+                if (method === 'POST') {
+                    const gradesData = [
+                        { name: "Стажер", level: 1, description: "Начальный уровень, основы языка и технологий" },
+                        { name: "Джун", level: 2, description: "Базовые навыки, простые задачи под руководством" },
+                        { name: "Джун+", level: 3, description: "Уверенное владение базовыми технологиями, самостоятельные задачи" },
+                        { name: "Мидл", level: 4, description: "Опытный разработчик, сложные задачи, архитектурные решения" },
+                        { name: "Синьор", level: 5, description: "Эксперт, лидерство, стратегические решения" }
+                    ];
+                    
+                    // Добавляем грейды последовательно
+                    for (const gradeData of gradesData) {
+                        await fetch(`/api/v1/professions/${savedProfession.profession_id}/grades`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                ...gradeData,
+                                profession_id: savedProfession.profession_id
+                            })
+                        });
+                    }
+                }
+                
+                // Показываем сообщение об успехе
+                successElement.textContent = professionId ? 'Специальность успешно обновлена' : 'Специальность успешно добавлена со всеми грейдами';
+                
+                // Перезагружаем список специальностей
+                setTimeout(() => {
+                    loadProfessions();
+                    document.getElementById('professionForm').classList.remove('active');
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Ошибка при сохранении специальности:', error);
+                errorElement.textContent = error.message;
+            }
+        }
+        
+        // Функция для редактирования специальности
+        async function editProfession(professionId) {
+            try {
+                const response = await fetch(`/api/v1/professions/${professionId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке данных специальности');
+                }
+                
+                const profession = await response.json();
+                
+                // Заполняем форму данными
+                document.getElementById('formTitle').textContent = 'Редактирование специальности';
+                document.getElementById('professionId').value = profession.profession_id;
+                document.getElementById('professionName').value = profession.name;
+                document.getElementById('professionDescription').value = profession.description || '';
+                document.getElementById('professionFormError').textContent = '';
+                document.getElementById('professionFormSuccess').textContent = '';
+                
+                // Показываем форму
+                document.getElementById('professionForm').classList.add('active');
+                document.getElementById('professionName').focus();
+                
+            } catch (error) {
+                console.error('Ошибка при загрузке данных специальности:', error);
+                alert('Ошибка при загрузке данных специальности: ' + error.message);
+            }
+        }
+        
+        // Функция для удаления специальности
+        async function deleteProfession(professionId) {
+            if (!confirm('Вы уверены, что хотите удалить эту специальность? Это действие нельзя отменить.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/v1/professions/${professionId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка при удалении специальности');
+                }
+                
+                // Перезагружаем список специальностей
+                loadProfessions();
+                
+            } catch (error) {
+                console.error('Ошибка при удалении специальности:', error);
+                alert('Ошибка при удалении специальности: ' + error.message);
+            }
+        }
+        
+        // Функция для выбора специальности и загрузки связанных данных
+        async function selectProfession(professionId) {
+            // Выделяем выбранную строку
+            const rows = document.querySelectorAll('.admin-table tbody tr');
+            rows.forEach(row => row.classList.remove('active'));
+            document.querySelector(`tr[data-profession-id="${professionId}"]`).classList.add('active');
+            
+            // Активируем кнопки добавления
+            document.getElementById('addGradeBtn').disabled = false;
+            document.getElementById('addModuleBtn').disabled = false;
+            
+            // Загружаем грейды для выбранной специальности
+            loadGrades(professionId);
+            
+            // Сохраняем ID выбранной специальности
+            localStorage.setItem('selectedProfessionId', professionId);
+        }
+        
+        // Функция для загрузки грейдов
+        async function loadGrades(professionId) {
+            const gradesContainer = document.getElementById('gradesTableContainer');
+            gradesContainer.innerHTML = '<div class="admin-loading">Загрузка грейдов</div>';
+            
+            try {
+                const response = await fetch(`/api/v1/professions/${professionId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке грейдов');
+                }
+                
+                const profession = await response.json();
+                const grades = profession.grades || [];
+                
+                if (grades.length === 0) {
+                    gradesContainer.innerHTML = '<div class="admin-error">Нет доступных грейдов для этой специальности</div>';
+                    return;
+                }
+                
+                let tableHtml = `
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Уровень</th>
+                                <th>Описание</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                grades.forEach(grade => {
+                    tableHtml += `
+                        <tr>
+                            <td>${grade.grade_id}</td>
+                            <td>${grade.name}</td>
+                            <td>${grade.level}</td>
+                            <td>${grade.description || '-'}</td>
+                            <td class="admin-table__actions">
+                                <button class="btn btn--secondary admin-table__btn" onclick="alert('Функционал в разработке')">Редактировать</button>
+                                <button class="btn btn--secondary admin-table__btn" onclick="alert('Функционал в разработке')">Удалить</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                tableHtml += `
+                        </tbody>
+                    </table>
+                `;
+                
+                gradesContainer.innerHTML = tableHtml;
+                
+            } catch (error) {
+                console.error('Ошибка при загрузке грейдов:', error);
+                gradesContainer.innerHTML = `
+                    <div class="admin-error">
+                        <p>Не удалось загрузить грейды</p>
+                        <p>Ошибка: ${error.message}</p>
+                        <button class="btn btn--secondary" onclick="loadGrades(${professionId})">Повторить</button>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
